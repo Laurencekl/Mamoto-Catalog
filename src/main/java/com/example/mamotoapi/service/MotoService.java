@@ -6,35 +6,37 @@ import com.example.mamotoapi.repository.MotoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-@Service
 
+@Service
 public class MotoService {
 
-    private final MotoRepository;
+    private final MotoRepository motoRepository;
 
-    public MotoService(MotoRepository motoRepository){
+    public MotoService(MotoRepository motoRepository) {
         this.motoRepository = motoRepository;
     }
 
-    public List <MotoService(MotoRepository motoRepository){
-        this.motoRepository = motoRepository;
+    public List<Moto> listarTodas() {
+        return motoRepository.findAll();
     }
 
-    public List<Moto> listarDisponivels(){
+    public List<Moto> listarDisponiveis() {
         return motoRepository.findByStatus(StatusMoto.DISPONIVEL);
     }
 
-    public Moto buscarPorId(Long id){
+    public Moto buscarPorId(Long id) {
         return motoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Moto não encontrada"));
     }
 
-    public Moto cadastrar (Moto moto){
-        if (moto.getStatus() == null ){
+    public Moto cadastrar(Moto moto) {
+        if (moto.getStatus() == null) {
             moto.setStatus(StatusMoto.DISPONIVEL);
         }
+
         return motoRepository.save(moto);
     }
+
     public Moto atualizar(Long id, Moto dadosAtualizados) {
         Moto moto = buscarPorId(id);
 
@@ -51,6 +53,7 @@ public class MotoService {
 
         return motoRepository.save(moto);
     }
+
     public void remover(Long id) {
         Moto moto = buscarPorId(id);
         motoRepository.delete(moto);
@@ -59,7 +62,7 @@ public class MotoService {
     public Moto marcarComoVendida(Long id) {
         Moto moto = buscarPorId(id);
         moto.setStatus(StatusMoto.VENDIDA);
+
         return motoRepository.save(moto);
     }
-
 }
